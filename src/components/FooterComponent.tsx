@@ -1,9 +1,10 @@
 import { Avatar } from "primereact/avatar";
 import { footerStrings } from "../strings/footerStrings";
+import { navbarStrings } from "../strings/navbarStrings";
 
 export const FooterComponent = () => {
   return (
-    <footer className="py-6 px-3">
+    <footer className="py-6 px-3" id={navbarStrings.pages[2].id}>
       <h1 className="text-xxl mb-3 text-center">{footerStrings.title}</h1>
       <div className="flex flex-wrap justify-content-around">
         <div className="flex flex-column align-items-center col-12 md:col-3 mb-4 md:mb-0">

@@ -51,7 +51,3 @@ export interface CreateInputsProps {
   ) => void;
   isTouched?: boolean;
 }
-
-export interface LoginResponse {
-  message: string;
-}

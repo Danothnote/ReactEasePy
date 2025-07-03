@@ -10,7 +10,8 @@ import { Toast } from "primereact/toast";
 import { showToast } from "../helpers/showToast";
 import { createInitialFormState } from "../helpers/createInitialFormState";
 import { validateFormData } from "../helpers/validateFormData";
-import { loginService } from "../services/loginService";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 export const LoginPage = () => {
   const initialFormState = useMemo(() => {
@@ -23,6 +24,8 @@ export const LoginPage = () => {
     {}
   );
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const { login, loading } = useAuth();
+  const navigate = useNavigate();
   const toast = useRef<Toast>(null);
 
   useEffect(() => {
@@ -53,12 +56,12 @@ export const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await loginService(formData);
+      const response = await login(formData, navigate);
       showToast(
         toast,
         loginStrings.toastSuccess.severity,
         loginStrings.toastSuccess.summary,
-        response.message
+        response
       );
       setFormData(initialFormState);
       setTouchedFields({});
@@ -105,7 +108,7 @@ export const LoginPage = () => {
           </div>
           <div className="flex flex-column justify-content-center">
             <div className="flex flex-wrap gap-5 mt-4 mb-3 justify-content-center">
-              <Button type="submit" disabled={!isFormValid}>
+              <Button type="submit" loading={loading} disabled={!isFormValid}>
                 {loginStrings.primaryButton}
               </Button>
               <Button type="button" onClick={handleNavigateSignup}>
