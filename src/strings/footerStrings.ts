@@ -17,29 +17,29 @@ export const footerStrings: FooterStrings = {
     list: [
       {
         name: "YouTube",
-        iconUrl: "src/assets/youtube.webp",
+        iconUrl: "http://localhost:8000/static/images/socials/youtube.webp",
         socialUrl: "https://youtube.com",
       },
       {
         name: "Instagram",
-        iconUrl: "src/assets/instagram.webp",
+        iconUrl: "http://localhost:8000/static/images/socials/instagram.webp",
         socialUrl: "https://instagram.com",
       },
       {
         name: "TikTok",
-        iconUrl: "src/assets/tiktok.webp",
+        iconUrl: "http://localhost:8000/static/images/socials/tiktok.webp",
         socialUrl: "https://tiktok.com",
       },
       {
         name: "Facebook",
-        iconUrl: "src/assets/facebook.webp",
+        iconUrl: "http://localhost:8000/static/images/socials/facebook.webp",
         socialUrl: "https://facebook.com",
       },
     ],
   },
   contact: {
     title: "Escríbenos a nuestro WhatsApp",
-    list: [{ number: "+593 998 551 234", iconUrl: "src/assets/whatsapp.webp" }],
+    list: [{ number: "+593 998 551 234", iconUrl: "http://localhost:8000/static/images/socials/whatsapp.webp" }],
   },
   copyright: "BaobabTech. Todos los derechos reservados."
 };

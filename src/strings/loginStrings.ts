@@ -9,18 +9,16 @@ export const loginStrings: FormStrings = {
       type: "email",
       label: "Ingresa tu email",
       placeholder: "Ej: usuario@correo.com",
+      validation: "Por favor, ingresa un email válido.",
     },
     {
       id: "password",
       type: "password",
       label: "Ingresa tu contraseña",
       placeholder: "Ej: Secreto123*",
+      validation: "Este campo es obligatorio",
     },
   ],
-  validations: {
-    email: "Por favor, ingresa un email válido.",
-    password: "Este campo es obligatorio",
-  },
   toastSuccess: {
     severity: "success",
     summary: "¡Inicio de Sesión Exitoso!",

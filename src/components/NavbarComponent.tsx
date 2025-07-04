@@ -107,7 +107,7 @@ export const NavbarComponent = () => {
               className="flex align-items-center gap-3 cursor-pointer"
             >
               <span className="text-white hidden sm:inline">
-                {navbarStrings.greetings.label} {user?.first_name}
+                {navbarStrings.greetings.label} {user?.firstname}
               </span>
               <Avatar
                 icon="pi pi-user"

@@ -7,6 +7,7 @@ import { NavbarComponent } from "./components/NavbarComponent";
 import { AuthProvider } from "./auth/authContext";
 import { Route, Routes } from "react-router";
 import 'primeicons/primeicons.css';
+import { SignupPage } from "./screens/SignupPage";
 
 export const App = () => {
   return (
@@ -15,6 +16,7 @@ export const App = () => {
         <NavbarComponent />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <FooterComponent />
       </AuthProvider>

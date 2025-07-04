@@ -2,8 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import type {
   AuthContextType,
   AuthProviderProps,
+  AuthResponse,
   AuthUser,
-  LoginResponse,
 } from "../types/authTypes";
 import type { NavigateFunction } from "react-router";
 import axios from "axios";
@@ -24,7 +24,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await axios.get<AuthUser>(`${API_BASE_URL}/users/me`);
       if (response.data) {
-        console.log(response.data)
         setUser(response.data);
         setIsAuthenticated(true);
       }
@@ -44,13 +43,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (userData: FormData, navigate: NavigateFunction) => {
     setLoading(true);
     try {
-      const response = await axios.post<LoginResponse>(
+      const response = await axios.post<AuthResponse>(
         `${API_BASE_URL}/users/login`,
         userData
       );
       if (response.status === 200 && response.data.user) {
         setUser(response.data.user);
         setIsAuthenticated(true);
+        setLoading(false);
+        navigate("/");
+        return response.data.message;
+      }
+      setLoading(false);
+      return response.data.message;
+    } catch (error) {
+      setLoading(false);
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error en el inicio de sesión:",
+          error.response?.data || error.message
+        );
+        throw new Error(
+          error.response?.data?.detail || "Error al iniciar sesión"
+        );
+      } else {
+        console.error("Error inesperado:", error);
+        throw new Error("Ha ocurrido un error inesperado");
+      }
+    }
+  };
+
+  const signup = async (userData: FormData, navigate: NavigateFunction) => {
+    setLoading(true);
+    try {
+      
+      const response = await axios.post<AuthResponse>(
+        `${API_BASE_URL}/users`,
+        userData
+      );
+      if (response.status === 200 && response.data.user) {
         setLoading(false);
         navigate("/");
         return response.data.message;
@@ -89,7 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, logout, loading }}
+      value={{ user, isAuthenticated, login, signup, logout, loading }}
     >
       {children}
     </AuthContext.Provider>

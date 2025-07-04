@@ -1,21 +1,20 @@
-import type { Moment } from "moment";
-import { loginStrings } from "../strings/loginStrings";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { createInputs } from "../helpers/createInputs";
-import type { FormInput, FormData } from "../types/formTypes";
-import React from "react";
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
-import { Toast } from "primereact/toast";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { showToast } from "../helpers/showToast";
-import { createInitialFormState } from "../helpers/createInitialFormState";
-import { validateFormData } from "../helpers/validateFormData";
-import { useAuth } from "../hooks/useAuth";
+import { signupStrings } from "../strings/signupStrings";
+import type { Moment } from "moment";
+import type { FormData, FormInput } from "../types/formTypes";
+import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import { validateFormData } from "../helpers/validateFormData";
+import { createInitialFormState } from "../helpers/createInitialFormState";
+import { Card } from "primereact/card";
+import { createInputs } from "../helpers/createInputs";
+import { Button } from "primereact/button";
 
-export const LoginPage = () => {
+export const SignupPage = () => {
   const initialFormState = useMemo(() => {
-    return createInitialFormState(loginStrings.inputs);
+    return createInitialFormState(signupStrings.inputs);
   }, []);
 
   const [formData, setFormData] = useState<FormData>(initialFormState);
@@ -24,19 +23,19 @@ export const LoginPage = () => {
     {}
   );
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const { login, loading } = useAuth();
+  const { signup, loading } = useAuth();
   const navigate = useNavigate();
   const toast = useRef<Toast>(null);
 
   useEffect(() => {
-      const { errors: newErrors, isValid: overallIsValid } = validateFormData(
-        formData,
-        loginStrings.inputs
-      );
-  
-      setErrors(newErrors);
-      setIsFormValid(overallIsValid);
-    }, [formData]);
+    const { errors: newErrors, isValid: overallIsValid } = validateFormData(
+      formData,
+      signupStrings.inputs
+    );
+
+    setErrors(newErrors);
+    setIsFormValid(overallIsValid);
+  }, [formData]);
 
   const handleChange = (
     id: keyof FormData,
@@ -56,11 +55,11 @@ export const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await login(formData, navigate);
+      const response = await signup(formData, navigate);
       showToast(
         toast,
-        loginStrings.toastSuccess.severity,
-        loginStrings.toastSuccess.summary,
+        signupStrings.toastSuccess.severity,
+        signupStrings.toastSuccess.summary,
         response
       );
       setFormData(initialFormState);
@@ -68,35 +67,30 @@ export const LoginPage = () => {
     } catch (error: any) {
       showToast(
         toast,
-        loginStrings.toastError.severity,
-        loginStrings.toastError.summary,
+        signupStrings.toastError.severity,
+        signupStrings.toastError.summary,
         error.message || "Error desconocido al iniciar sesión"
       );
     }
   };
 
-  const handleNavigateSignup = () => {
-    navigate("/signup");
+  const handleNavigateBack = () => {
+    navigate(-1);
   };
-
-  const handleNavigateResetPassword = () => {
-    console.log("Reset Password");
-  };
-
   return (
     <div
       className="flex min-h-screen justify-content-center align-items-center p-3 bg-cover bg-bottom"
-      style={{ backgroundImage: `url(${loginStrings.imageUrl})` }}
+      style={{ backgroundImage: `url(${signupStrings.imageUrl})` }}
     >
       <Toast ref={toast} />
       <Card
-        title={loginStrings.title}
+        title={signupStrings.title}
         className="max-w-30rem max-h-max text-center px-2 pt-6 pb-4"
         style={{ opacity: 0.96 }}
       >
         <form onSubmit={handleSubmit}>
           <div className="flex flex-wrap px-2 mt-5 gap-2">
-            {loginStrings.inputs.map((input: FormInput) =>
+            {signupStrings.inputs.map((input: FormInput) =>
               createInputs({
                 input: input,
                 formData: formData,
@@ -109,18 +103,12 @@ export const LoginPage = () => {
           <div className="flex flex-column justify-content-center">
             <div className="flex flex-wrap gap-5 mt-4 mb-3 justify-content-center">
               <Button type="submit" loading={loading} disabled={!isFormValid}>
-                {loginStrings.primaryButton}
+                {signupStrings.primaryButton}
               </Button>
-              <Button type="button" onClick={handleNavigateSignup}>
-                {loginStrings.secondaryButton}
+              <Button type="button" onClick={handleNavigateBack}>
+                {signupStrings.secondaryButton}
               </Button>
             </div>
-            <Button
-              type="button"
-              label={loginStrings.optional}
-              link
-              onClick={handleNavigateResetPassword}
-            />
           </div>
         </form>
       </Card>
