@@ -27,7 +27,7 @@ export const createInputs = ({
           key={input.id}
           className={`w-full ${shouldShowError ? "mb-3" : "mb-5"}`}
         >
-          <FloatLabel className={"block m-auto w-9"}>
+          <FloatLabel className={"block m-auto w-11"}>
             <InputText
               invalid={shouldShowError ? true : false}
               className="w-12"
@@ -60,7 +60,7 @@ export const createInputs = ({
           key={input.id}
           className={`w-full ${shouldShowError ? "mb-3" : "mb-5"}`}
         >
-          <FloatLabel className={"block m-auto w-9"}>
+          <FloatLabel className={"block m-auto w-11"}>
             <InputNumber
               invalid={shouldShowError ? true : false}
               className="w-12"
@@ -93,7 +93,7 @@ export const createInputs = ({
           key={input.id}
           className={`w-full ${shouldShowError ? "mb-3" : "mb-5"}`}
         >
-          <FloatLabel className={"block m-auto w-9"}>
+          <FloatLabel className={"block m-auto w-11"}>
             <Calendar
               invalid={shouldShowError ? true : false}
               className="w-12"

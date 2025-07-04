@@ -47,3 +47,12 @@ export interface CreateInputsProps {
   ) => void;
   isTouched?: boolean;
 }
+
+export interface UseFormLayoutProps {
+  inputs: FormInput[];
+  formData: FormData;
+  errors: Record<string, string[]>;
+  handleChange: CreateInputsProps['handleChange'];
+  touchedFields: Record<string, boolean>;
+  threshold?: number;
+}

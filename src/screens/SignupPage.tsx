@@ -11,6 +11,7 @@ import { createInitialFormState } from "../helpers/createInitialFormState";
 import { Card } from "primereact/card";
 import { createInputs } from "../helpers/createInputs";
 import { Button } from "primereact/button";
+import { useFormLayout } from "../hooks/useFormLayout";
 
 export const SignupPage = () => {
   const initialFormState = useMemo(() => {
@@ -75,8 +76,19 @@ export const SignupPage = () => {
   };
 
   const handleNavigateBack = () => {
+    setFormData(initialFormState);
+    setTouchedFields({});
     navigate(-1);
   };
+
+  const formLayout = useFormLayout({
+    inputs: signupStrings.inputs,
+    formData: formData,
+    errors: errors,
+    handleChange: handleChange,
+    touchedFields: touchedFields,
+  });
+
   return (
     <div
       className="flex min-h-screen justify-content-center align-items-center p-3 bg-cover bg-bottom"
@@ -85,21 +97,12 @@ export const SignupPage = () => {
       <Toast ref={toast} />
       <Card
         title={signupStrings.title}
-        className="max-w-30rem max-h-max text-center px-2 pt-6 pb-4"
+        className="max-h-max text-center px-2 pt-6 pb-4"
         style={{ opacity: 0.96 }}
       >
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-wrap px-2 mt-5 gap-2">
-            {signupStrings.inputs.map((input: FormInput) =>
-              createInputs({
-                input: input,
-                formData: formData,
-                errors: errors[input.id],
-                handleChange: handleChange,
-                isTouched: touchedFields[input.id],
-              })
-            )}
-          </div>
+          {formLayout}
+
           <div className="flex flex-column justify-content-center">
             <div className="flex flex-wrap gap-5 mt-4 mb-3 justify-content-center">
               <Button type="submit" loading={loading} disabled={!isFormValid}>

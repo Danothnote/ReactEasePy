@@ -12,6 +12,7 @@ import { createInitialFormState } from "../helpers/createInitialFormState";
 import { validateFormData } from "../helpers/validateFormData";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
+import { useFormLayout } from "../hooks/useFormLayout";
 
 export const LoginPage = () => {
   const initialFormState = useMemo(() => {
@@ -29,14 +30,14 @@ export const LoginPage = () => {
   const toast = useRef<Toast>(null);
 
   useEffect(() => {
-      const { errors: newErrors, isValid: overallIsValid } = validateFormData(
-        formData,
-        loginStrings.inputs
-      );
-  
-      setErrors(newErrors);
-      setIsFormValid(overallIsValid);
-    }, [formData]);
+    const { errors: newErrors, isValid: overallIsValid } = validateFormData(
+      formData,
+      loginStrings.inputs
+    );
+
+    setErrors(newErrors);
+    setIsFormValid(overallIsValid);
+  }, [formData]);
 
   const handleChange = (
     id: keyof FormData,
@@ -76,12 +77,22 @@ export const LoginPage = () => {
   };
 
   const handleNavigateSignup = () => {
+    setFormData(initialFormState);
+    setTouchedFields({});
     navigate("/signup");
   };
 
   const handleNavigateResetPassword = () => {
     console.log("Reset Password");
   };
+
+  const formLayout = useFormLayout({
+    inputs: loginStrings.inputs,
+    formData: formData,
+    errors: errors,
+    handleChange: handleChange,
+    touchedFields: touchedFields,
+  });
 
   return (
     <div
@@ -95,17 +106,8 @@ export const LoginPage = () => {
         style={{ opacity: 0.96 }}
       >
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-wrap px-2 mt-5 gap-2">
-            {loginStrings.inputs.map((input: FormInput) =>
-              createInputs({
-                input: input,
-                formData: formData,
-                errors: errors[input.id],
-                handleChange: handleChange,
-                isTouched: touchedFields[input.id],
-              })
-            )}
-          </div>
+          {formLayout}
+
           <div className="flex flex-column justify-content-center">
             <div className="flex flex-wrap gap-5 mt-4 mb-3 justify-content-center">
               <Button type="submit" loading={loading} disabled={!isFormValid}>
