@@ -1,3 +1,4 @@
+import { errorStrings } from "../strings/errorPasswordStrings";
 import type { FormData, FormInput } from "../types/formTypes";
 import { validatePassword } from "./validatePassword";
 
@@ -20,17 +21,15 @@ export const validateFormData = (
       (typeof value === "string" && value.trim().length === 0) ||
       (Array.isArray(value) && value.length === 0);
 
-    if (isEmpty) {
-      if (input.validation) {
-        newErrors[input.id as string] = [input.validation];
-        hasEmptyOrInvalidFields = true;
-      }
-      continue;
+    if (isEmpty && input.validation) {
+      if (!newErrors[input.id as string]) newErrors[input.id as string] = [];
+      newErrors[input.id as string].push(input.validation);
+      hasEmptyOrInvalidFields = true;
     }
 
     if (input.type === "email") {
       const emailValue = value as string;
-      if (!emailRegex.test(emailValue)) {
+      if (!isEmpty && !emailRegex.test(emailValue)) {
         if (!newErrors[input.id as string]) newErrors[input.id as string] = [];
         newErrors[input.id as string].push(input.validation!);
         hasEmptyOrInvalidFields = true;
@@ -40,6 +39,7 @@ export const validateFormData = (
     if (input.type === "text") {
       const textValue = value as string;
       if (
+        !isEmpty &&
         input.validation &&
         input.validation.includes("al menos 2 caracteres") &&
         typeof textValue === "string" &&
@@ -51,16 +51,50 @@ export const validateFormData = (
       }
     }
 
-    if (input.type === "date") {
-      const dateValue = value as moment.Moment | null;
-      if (dateValue) {
-        if (input.min && dateValue.isBefore(input.min)) {
+    if (input.type === "number") {
+      const numberValue = value as number;
+      if (!isEmpty) {
+        if (
+          input.min !== undefined &&
+          typeof input.min === "number" &&
+          numberValue < input.min
+        ) {
           if (!newErrors[input.id as string])
             newErrors[input.id as string] = [];
           newErrors[input.id as string].push(input.validation!);
           hasEmptyOrInvalidFields = true;
         }
-        if (input.max && dateValue.isAfter(input.max)) {
+        if (
+          input.max !== undefined &&
+          typeof input.max === "number" &&
+          numberValue > input.max
+        ) {
+          if (!newErrors[input.id as string])
+            newErrors[input.id as string] = [];
+          newErrors[input.id as string].push(input.validation!);
+          hasEmptyOrInvalidFields = true;
+        }
+      }
+    }
+
+    if (input.type === "date") {
+      const dateValue = value as moment.Moment | null;
+      if (!isEmpty && dateValue) {
+        if (
+          input.min &&
+          typeof input.min !== "number" &&
+          dateValue.isBefore(input.min)
+        ) {
+          if (!newErrors[input.id as string])
+            newErrors[input.id as string] = [];
+          newErrors[input.id as string].push(input.validation!);
+          hasEmptyOrInvalidFields = true;
+        }
+        if (
+          input.max &&
+          typeof input.max !== "number" &&
+          dateValue.isAfter(input.max)
+        ) {
           if (!newErrors[input.id as string])
             newErrors[input.id as string] = [];
           newErrors[input.id as string].push(input.validation!);
@@ -71,11 +105,13 @@ export const validateFormData = (
 
     if (input.id === "password" && isSignupForm) {
       const password = (formData.password as string | undefined | null) || "";
-      const passwordErrors = validatePassword(password);
-      if (passwordErrors.length > 0) {
-        if (!newErrors.password) newErrors.password = [];
-        newErrors.password = [...newErrors.password, ...passwordErrors];
-        hasEmptyOrInvalidFields = true;
+      if (!isEmpty) {
+        const passwordErrors = validatePassword(password);
+        if (passwordErrors.length > 0) {
+          if (!newErrors.password) newErrors.password = [];
+          newErrors.password = [...newErrors.password, ...passwordErrors];
+          hasEmptyOrInvalidFields = true;
+        }
       }
     }
 
@@ -84,11 +120,17 @@ export const validateFormData = (
       const confirmPassword =
         (formData.confirmPassword as string | undefined | null) || "";
 
-      if (password !== confirmPassword) {
+      if (!isEmpty && password !== confirmPassword) {
         if (!newErrors.confirmPassword) {
           newErrors.confirmPassword = [];
         }
-        newErrors.confirmPassword.push("Las contraseñas no coinciden.");
+        newErrors.confirmPassword.push(errorStrings.confirmPasswordError);
+        hasEmptyOrInvalidFields = true;
+      } else if (isEmpty) {
+        if (!newErrors.confirmPassword) {
+          newErrors.confirmPassword = [];
+        }
+        newErrors.confirmPassword.push(errorStrings.pleaseConfirmPassword);
         hasEmptyOrInvalidFields = true;
       }
     }

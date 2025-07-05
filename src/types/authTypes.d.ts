@@ -4,8 +4,8 @@ import type { FormData } from "./formTypes";
 export interface AuthUser {
   _id: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   birth_date: Moment | null;
   email: string | null;
   password?: string;
@@ -16,7 +16,7 @@ export interface AuthUser {
 }
 
 export interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   login: (userData: FormData, navigate: NavigateFunction) => Promise<string>;
   signup: (userData: FormData, navigate: NavigateFunction) => Promise<string>;

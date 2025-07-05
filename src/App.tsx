@@ -8,6 +8,7 @@ import { AuthProvider } from "./auth/authContext";
 import { Route, Routes } from "react-router";
 import 'primeicons/primeicons.css';
 import { SignupPage } from "./screens/SignupPage";
+import { NewFlatPage } from "./screens/NewFlatPage";
 
 export const App = () => {
   return (
@@ -17,6 +18,7 @@ export const App = () => {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/newFlat" element={<NewFlatPage />} />
         </Routes>
         <FooterComponent />
       </AuthProvider>

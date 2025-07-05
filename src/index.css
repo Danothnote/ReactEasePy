@@ -2,3 +2,17 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.p-fileupload-buttonbar .p-button.p-component,
+.p-fileupload-buttonbar .p-button.p-component.p-disabled {
+  display: none;
+}
+
+.p-fileupload-buttonbar .p-button.p-fileupload-choose.p-component {
+  display: inline-flex;
+}
+
+.p-fileupload-buttonbar {
+  display: flex;
+  justify-content: center;
+}

@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       
       const response = await axios.post<AuthResponse>(
-        `${API_BASE_URL}/users`,
+        `${API_BASE_URL}/users/signup`,
         userData
       );
       if (response.status === 200 && response.data.user) {

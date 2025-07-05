@@ -1,0 +1,96 @@
+import moment from "moment";
+import type { FormStrings } from "../types/formTypes";
+
+export const newFlatStrings: FormStrings = {
+  title: "Publica tu departamento",
+  imageUrl: "http://localhost:8000/static/images/wallpapers/newFlat.webp",
+  inputs: [
+    {
+      label: "Nombre",
+      placeholder: "Ej: Departamento 1",
+      type: "text",
+      id: "flatName",
+      validation: "Debe tener al menos 2 caracteres",
+    },
+    {
+      label: "Ciudad",
+      placeholder: "Ej: Quito",
+      type: "text",
+      id: "city",
+      validation: "Debe tener al menos 2 caracteres",
+    },
+    {
+      label: "Calle",
+      placeholder: "Ej: Ruta 101",
+      type: "text",
+      id: "street",
+      validation: "Debe tener al menos 2 caracteres",
+    },
+    {
+      label: "Número",
+      placeholder: "Ej: N48-16",
+      type: "text",
+      id: "streetNumber",
+      validation: "Debe tener al menos 2 caracteres",
+    },
+    {
+      label: "Aire Acondicionado",
+      placeholder: "Ej: Si",
+      type: "select",
+      options: ["No", "Si"],
+      id: "airConditioning",
+      validation: "Debe seleccionar una opción",
+    },
+    {
+      label: "Área",
+      placeholder: "Ej: 150m²",
+      type: "number",
+      min: 40,
+      id: "area",
+      validation: "Debe ser mayor o igual a 40m²",
+    },
+    {
+      label: "Año de construcción",
+      placeholder: "Ej: 2018",
+      min: 1800,
+      max: new Date().getFullYear(),
+      type: "number",
+      id: "yearBuilt",
+      validation: "Debe ser posterior al año 1800",
+    },
+    {
+      label: "Precio de Renta",
+      placeholder: "Ej: $150",
+      type: "number",
+      min: 10,
+      id: "rentPrice",
+      validation: "Debe ser mayor a $10",
+    },
+    {
+      label: "Fecha de disponibilidad",
+      placeholder: "Ej: 01-01-2025",
+      min: moment(),
+      type: "date",
+      id: "dateAvailable",
+      validation: "Debe ser posterior a la fecha actual",
+    },
+    {
+      label: "Suba fotos del departamento",
+      uploadButtonLabel: "Subir fotos",
+      placeholder: "Arrastra y suelta tus fotos aquí",
+      type: "file",
+      id: "imgUpload",
+      validation: "Se requiere al menos un archivo",
+    },
+  ],
+  toastSuccess: {
+    severity: "success",
+    summary: "Publicación completa",
+  },
+  toastError: {
+    severity: "error",
+    summary: "Error al publicar",
+  },
+  primaryButton: "Publicar",
+  secondaryButton: "Cancelar",
+};

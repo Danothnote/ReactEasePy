@@ -17,13 +17,15 @@ export interface FormToast {
 }
 
 export interface FormInput {
-  id: keyof FormData;
-  type: "text" | "email" | "password" | "number" | "date" | "file";
+  id: string;
+  type: "text" | "email" | "password" | "number" | "date" | "file" | "select";
   label?: string;
+  uploadButtonLabel?: string;
   placeholder?: string;
   validation?: string;
-  min?: Moment;
-  max?: Moment;
+  options?: string[];
+  min?: Moment | number;
+  max?: Moment | number;
 }
 
 export interface FormStrings {
@@ -46,13 +48,15 @@ export interface CreateInputsProps {
     value: string | Moment | number | File[] | null
   ) => void;
   isTouched?: boolean;
+  fileUploadRef?: React.RefObject<FileUpload>;
 }
 
 export interface UseFormLayoutProps {
   inputs: FormInput[];
   formData: FormData;
   errors: Record<string, string[]>;
-  handleChange: CreateInputsProps['handleChange'];
+  handleChange: CreateInputsProps["handleChange"];
   touchedFields: Record<string, boolean>;
   threshold?: number;
+  fileUploadRef?: React.RefObject<FileUpload>;
 }

@@ -1,8 +1,7 @@
 import type { Moment } from "moment";
 import { loginStrings } from "../strings/loginStrings";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createInputs } from "../helpers/createInputs";
-import type { FormInput, FormData } from "../types/formTypes";
+import type { FormData } from "../types/formTypes";
 import React from "react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
